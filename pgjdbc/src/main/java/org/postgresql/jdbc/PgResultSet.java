@@ -245,6 +245,11 @@ public class PgResultSet implements ResultSet, org.postgresql.PGRefCursorResultS
       default:
         String type = getPGType(columnIndex);
 
+        // json和jsonb类型返回string
+        if (type.equals("json") || type.equals("jsonb")) {
+          return getString(columnIndex);
+        }
+
         // if the backend doesn't know the type then coerce to String
         if (type.equals("unknown")) {
           return getString(columnIndex);
